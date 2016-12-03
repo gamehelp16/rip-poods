@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>RIP Poods</title>
+
+	<link rel="stylesheet" href="odometer-theme-default.css" />
+	<style>
+
+		body {
+			font-family: Consolas;
+			margin: 0;
+			color: #333;
+		}
+
+		h1, h2 {
+			font-weight: normal;
+		}
+
+		h2 {
+			color: #999;
+			font-size: 20px;
+		}
+
+		#counter-wrapper {
+			opacity: 0;
+			padding: 75px;
+			-webkit-transition: 1s ease all;
+			   -moz-transition: 1s ease all;
+			        transition: 1s ease all;
+		}
+
+		.counter {
+			font-size: 50px;
+			margin-bottom: 50px;
+		}
+
+		#bar {
+			width: 100%;
+			height: 3px;
+			background: #ddd;
+		}
+
+		#bar-progress {
+			width: 0;
+			height: 3px;
+			background: #999;
+			-webkit-transition: .5s ease all;
+			   -moz-transition: .5s ease all;
+			        transition: .5s ease all;
+		}
+
+		#prog-nums {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 7px;
+			color: #999;
+		}
+
+		#rip-wrapper {
+			display: flex;
+			position: absolute;
+			top: 0;
+			left: 0;
+			opacity: 0;
+			align-items: center;
+ 			justify-content: center;
+ 			width: 100vw;
+ 			height: 100vh;
+ 			-webkit-transition: 1s ease all;
+			   -moz-transition: 1s ease all;
+			        transition: 1s ease all;
+		}
+
+		.rip {
+			text-align: center;
+			font-size: 75px;
+		}
+
+		.odometer.odometer-auto-theme, .odometer.odometer-theme-default {
+			font-family: Consolas, serif;
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div id="counter-wrapper">
+		<h1>RIP Poods</h1><br>
+		<h2>Current subscriber count:</h2>
+		<div id="counter-1" class="counter odometer">49,000,000</div>
+
+		<h2>Subscribers left until 50 million:</h2>
+		<div id="counter-2" class="counter odometer">999,999</div>
+		<br><br><br>
+
+		<div id="bar">
+			<div id="bar-progress"></div>
+			<div id="prog-nums">
+				<div>49M</div>
+				<div>49.5M</div>
+				<div>50M</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="rip-wrapper">
+		<h1 class="rip">RIP Poods<br><span id="counter-3" class="odometer">50,000,000</span> subscribers</h1>
+	</div>
+
+	<script src="odometer.min.js"></script>
+	<script>
+
+		window.onload = function() {
+			updateCounter();
+		}
+
+		function updateCounter() {
+
+			var request = new XMLHttpRequest();
+			request.open('GET', 'https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UC-lHJZR3Gqxm24_Vd_AJ5Yw&fields=items/statistics/subscriberCount&key=AIzaSyAxoImyXMesvuFGzTBtgi1FsY7VWlgaAa0', true);
+
+			request.onload = function() {
+			  if (request.status >= 200 && request.status < 400) {
+
+			    var data = JSON.parse(request.responseText);
+			    var subscribers = parseInt(data.items[0].statistics.subscriberCount);
+			    var subscribersLeft = 50000000 - subscribers;
+
+			    if(subscribers < 50000000) {
+			    	document.getElementById("counter-wrapper").style.opacity = 1;
+			    	document.getElementById("rip-wrapper").style.opacity = 0;
+				    document.getElementById("counter-1").innerHTML = 
+				    document.getElementById("counter-3").innerHTML = subscribers;
+				    document.getElementById("counter-2").innerHTML = subscribersLeft;
+				    document.getElementById("bar-progress").style.width = (subscribers - 49000000) / 10000 + "%";
+				}
+				else {
+					document.getElementById("counter-wrapper").style.opacity = 0;
+			    	document.getElementById("rip-wrapper").style.opacity = 1;
+			    	document.getElementById("counter-3").innerHTML = subscribers;
+				}
+
+				setTimeout(updateCounter, 2000);
+
+			  } else {
+			   alert('Server returned error!')
+			  }
+			};
+
+			request.onerror = function() {
+			  alert('Cannot connect to YouTube!')
+			};
+
+			request.send();
+
+		}
+
+	</script>
+
+</body>
+</html>

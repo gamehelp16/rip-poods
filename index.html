@@ -24,10 +24,10 @@
 
 		#counter-wrapper {
 			opacity: 0;
-			padding: 75px;
-			-webkit-transition: 1s ease all;
-			   -moz-transition: 1s ease all;
-			        transition: 1s ease all;
+			padding: 60px;
+			-webkit-transition: 1s ease opacity;
+			   -moz-transition: 1s ease opacity;
+			        transition: 1s ease opacity;
 		}
 
 		.counter {
@@ -60,16 +60,16 @@
 		#rip-wrapper {
 			display: flex;
 			position: absolute;
-			top: 0;
+			top: -100000px;
 			left: 0;
 			opacity: 0;
 			align-items: center;
  			justify-content: center;
  			width: 100vw;
  			height: 100vh;
- 			-webkit-transition: 1s ease all;
-			   -moz-transition: 1s ease all;
-			        transition: 1s ease all;
+ 			-webkit-transition: 1s ease opacity;
+			   -moz-transition: 1s ease opacity;
+			        transition: 1s ease opacity;
 		}
 
 		.rip {
@@ -79,6 +79,42 @@
 
 		.odometer.odometer-auto-theme, .odometer.odometer-theme-default {
 			font-family: Consolas, serif;
+		}
+
+		.info {
+			position: absolute;
+			bottom: 20px;
+			right: 20px;
+			z-index: 10;
+			padding: 5px;
+			color: #42A5F5;
+		}
+
+		#close-window, a {
+			color: #42A5F5;
+			text-decoration: none;
+		}
+
+		.info:hover, #close-window:hover, a:hover {
+			text-decoration: underline;
+			color: #1E88E5;
+			cursor: pointer;
+		}
+
+		#info-wrapper {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: -1;
+			background: white;
+			padding: 60px;
+			line-height: 25px;
+			opacity: 0;
+			-webkit-transition: 1s ease opacity;
+			   -moz-transition: 1s ease opacity;
+			        transition: 1s ease opacity;
 		}
 
 	</style>
@@ -108,6 +144,15 @@
 		<h1 class="rip">RIP Poods<br><span id="counter-3" class="odometer">50,000,000</span> subscribers</h1>
 	</div>
 
+	<div id="info-wrapper">
+		<h1>What's this?</h1>
+		PewDiePie (the largest channel on YouTube) claimed that he's going to delete his channel once he reach 50 million subs, this site helps you to keep track of his sub count. (<a href="https://github.com/gamehelp16/rip-poods" target="_blank">View GitHub repo</a>)<br><br>
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/6-_4Uoo_7Y4" frameborder="0" allowfullscreen></iframe><br><br>
+		<span id="close-window">Close this window</span>
+	</div>
+
+	<small id="info-link" class="info">What's this?</small>
+
 	<script src="odometer.min.js"></script>
 	<script>
 
@@ -130,6 +175,7 @@
 			    if(subscribers < 50000000) {
 			    	document.getElementById("counter-wrapper").style.opacity = 1;
 			    	document.getElementById("rip-wrapper").style.opacity = 0;
+			    	document.getElementById("rip-wrapper").style.top = "-100000px";
 				    document.getElementById("counter-1").innerHTML = 
 				    document.getElementById("counter-3").innerHTML = subscribers;
 				    document.getElementById("counter-2").innerHTML = subscribersLeft;
@@ -138,6 +184,8 @@
 				else {
 					document.getElementById("counter-wrapper").style.opacity = 0;
 			    	document.getElementById("rip-wrapper").style.opacity = 1;
+			    	document.getElementById("rip-wrapper").style.top = "0px";
+
 			    	document.getElementById("counter-3").innerHTML = subscribers;
 				}
 
@@ -154,6 +202,18 @@
 
 			request.send();
 
+		}
+
+		document.getElementById("info-link").onclick = function() {
+			document.getElementById("info-wrapper").style["z-index"] = 20;
+			document.getElementById("info-wrapper").style.opacity = 1;
+		}
+
+		document.getElementById("close-window").onclick = function() {
+			document.getElementById("info-wrapper").style.opacity = 0;
+			setTimeout(function() {
+				document.getElementById("info-wrapper").style["z-index"] = -1;
+			}, 1000);
 		}
 
 	</script>

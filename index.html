@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<title>RIP Poods</title>
 
 	<link rel="stylesheet" href="odometer-theme-default.css" />
@@ -23,8 +26,13 @@
 		}
 
 		#counter-wrapper {
+			position: absolute;
+			top: -100000px;
+			left: 0;
 			opacity: 0;
+			width: 100%;
 			padding: 60px;
+			box-sizing: border-box;
 			-webkit-transition: 1s ease opacity;
 			   -moz-transition: 1s ease opacity;
 			        transition: 1s ease opacity;
@@ -39,6 +47,7 @@
 			width: 100%;
 			height: 3px;
 			background: #ddd;
+			margin-bottom: 30px;
 		}
 
 		#bar-progress {
@@ -65,7 +74,7 @@
 			opacity: 0;
 			align-items: center;
  			justify-content: center;
- 			width: 100vw;
+ 			width: 100%;
  			height: 100vh;
  			-webkit-transition: 1s ease opacity;
 			   -moz-transition: 1s ease opacity;
@@ -75,6 +84,7 @@
 		.rip {
 			text-align: center;
 			font-size: 75px;
+			padding: 25px;
 		}
 
 		.odometer.odometer-auto-theme, .odometer.odometer-theme-default {
@@ -82,7 +92,7 @@
 		}
 
 		.info {
-			position: absolute;
+			position: fixed;
 			bottom: 20px;
 			right: 20px;
 			z-index: 10;
@@ -103,11 +113,9 @@
 
 		#info-wrapper {
 			position: absolute;
-			top: 0;
-			bottom: 0;
+			top: -100000px;
 			left: 0;
-			right: 0;
-			z-index: -1;
+			z-index: 20;
 			background: white;
 			padding: 60px;
 			line-height: 25px;
@@ -117,14 +125,25 @@
 			        transition: 1s ease opacity;
 		}
 
+		iframe {
+			max-width: 100%;
+		}
+
+		@media (max-width: 560px) {
+		  .rip {
+		    font-size: 50px;
+		  }
+		}
+
 	</style>
+
 </head>
 <body>
 	
 	<div id="counter-wrapper">
 		<h1>RIP Poods</h1><br>
 		<h2>Current subscriber count:</h2>
-		<div id="counter-1" class="counter odometer">49,000,000</div>
+		<div id="counter-1" class="counter odometer">10,000,000</div>
 
 		<h2>Subscribers left until 50 million:</h2>
 		<div id="counter-2" class="counter odometer">999,999</div>
@@ -133,8 +152,8 @@
 		<div id="bar">
 			<div id="bar-progress"></div>
 			<div id="prog-nums">
-				<div>49M</div>
 				<div>49.5M</div>
+				<div>49.75M</div>
 				<div>50M</div>
 			</div>
 		</div>
@@ -174,15 +193,17 @@
 
 			    if(subscribers < 50000000) {
 			    	document.getElementById("counter-wrapper").style.opacity = 1;
+			    	document.getElementById("counter-wrapper").style.top = "0";
 			    	document.getElementById("rip-wrapper").style.opacity = 0;
 			    	document.getElementById("rip-wrapper").style.top = "-100000px";
 				    document.getElementById("counter-1").innerHTML = 
 				    document.getElementById("counter-3").innerHTML = subscribers;
 				    document.getElementById("counter-2").innerHTML = subscribersLeft;
-				    document.getElementById("bar-progress").style.width = (subscribers - 49000000) / 10000 + "%";
+				    document.getElementById("bar-progress").style.width = (subscribers - 49500000) / 10000 + "%";
 				}
 				else {
 					document.getElementById("counter-wrapper").style.opacity = 0;
+					document.getElementById("counter-wrapper").style.top = "-100000px";
 			    	document.getElementById("rip-wrapper").style.opacity = 1;
 			    	document.getElementById("rip-wrapper").style.top = "0px";
 
@@ -205,14 +226,14 @@
 		}
 
 		document.getElementById("info-link").onclick = function() {
-			document.getElementById("info-wrapper").style["z-index"] = 20;
+			document.getElementById("info-wrapper").style.top = "0";
 			document.getElementById("info-wrapper").style.opacity = 1;
 		}
 
 		document.getElementById("close-window").onclick = function() {
 			document.getElementById("info-wrapper").style.opacity = 0;
 			setTimeout(function() {
-				document.getElementById("info-wrapper").style["z-index"] = -1;
+				document.getElementById("info-wrapper").style.top = "-100000px";
 			}, 1000);
 		}
 
